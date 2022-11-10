@@ -1,0 +1,25 @@
+img {
+	max-width: 10rem;
+	max-height: 10rem;
+	margin: 3rem;
+}
+
+.card {
+	align-items: center;
+}
+
+.MemeApp {
+	align-items: center;
+}
+
+.Meme {
+	width: 20rem;
+	height: 20rem;
+	margin: 1rem;
+	float: left
+}
+
+#getMemeButton {
+	margin-left: 50%;
+	margin-top: 5rem;
+}
