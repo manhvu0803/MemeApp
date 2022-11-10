@@ -1,26 +1,46 @@
-const { Button } = ReactBootstrap;
+const { Button, Container } = ReactBootstrap;
 
-function MemeApp(props) {
-	const [memeData, setMemeData] = React.useState([]);
+function MemeApp() {
+	const query = ReactQuery.useQuery({
+		queryKey: "memes",
+		queryFn: fetchMemes
+	})
 
-	React.useEffect(() => { fetchMemes(setMemeData); }, []);
+	let content = null;
 
-	let memes = [];
-	for (let meme of memeData) {
-		memes.push(<Meme {...meme} key={meme.name}/>);
+	console.log(query);
+
+	if (query.isLoading) {
+		content = <Container fluid className="statusText">Loading...</Container>;
+	}
+	else if (query.isError) {
+		content = <Container fluid className="statusText">Unknown error</Container>;
+	}
+	else {
+		content = [];
+		for (let meme of query.data) {
+			content.push(<Meme {...meme} key={meme.name}/>);
+		}
 	}
 
 	return (
-		<div className="MemeApp">
-			<Button id="getMemeButton" variant="outline-dark" size="lg">Refresh memes</Button>
-			<div>{memes}</div>
-		</div>
+		<Container fluid className="MemeApp">
+			<Button id="getMemeButton" onClick={query.refetch} variant="outline-dark" size="lg">Refresh memes</Button>
+			<div>{content}</div>
+		</Container>
 	)
 }
 
-async function fetchMemes(setMemeData) {
+async function fetchMemes() {
 	let response = await fetch("https://api.imgflip.com/get_memes");
+	
+	if (!response.ok) {
+		throw new Error("Fetch memes return error");
+	}
+	
 	let result = await response.json();
+
 	console.log("Fetch successful: " + result.success);
-	setMemeData(result.data.memes);
+
+	return result.data.memes;
 }

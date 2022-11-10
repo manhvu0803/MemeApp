@@ -13,7 +13,11 @@ img {
 }
 
 .MemeApp {
-	align-items: center;
+	text-align: center;
+}
+
+.statusText {
+	font-size: large;
 }
 
 .Meme {
@@ -24,6 +28,6 @@ img {
 }
 
 #getMemeButton {
-	margin-left: 40%;
 	margin-top: 5rem;
+	margin-bottom: 5rem;
 }
